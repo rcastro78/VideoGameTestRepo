@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">VideoGamesTest</string>
+    <string name="title_activity_video_games">VideoGamesActivity</string>
+    <string name="title_activity_video_game_detail">VideoGameDetailActivity</string>
+</resources>
