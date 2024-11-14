@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import sv.com.videogametest.util.nunitoBold
 
 @Composable
 @Preview(showBackground = true)
@@ -52,6 +53,7 @@ fun VideoGameItemComposable(thumbNailUrl:String="",title:String="",
         // Título del videojuego
         Text(
             text = title,
+            fontFamily = nunitoBold,
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onSurface
         )

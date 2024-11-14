@@ -34,6 +34,8 @@ import kotlinx.coroutines.withContext
 import sv.com.videogamestest.db.VideoGameDB
 import sv.com.videogamestest.model.VideoGameItem
 import sv.com.videogametest.ui.theme.VideoGameTestTheme
+import sv.com.videogametest.util.nunitoBold
+import sv.com.videogametest.util.nunitoRegular
 
 class VideoGameDetailActivity : ComponentActivity() {
 
@@ -119,6 +121,7 @@ class VideoGameDetailActivity : ComponentActivity() {
 
             Text(
                 text = videoGame?.title ?: "Unknown Title",
+                fontFamily = nunitoBold,
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -135,7 +138,9 @@ class VideoGameDetailActivity : ComponentActivity() {
                     tint = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "Género: "+videoGame?.genre ?: "Unknown Genre")
+                Text(
+                    fontFamily = nunitoRegular,
+                    text = "Género: "+videoGame?.genre ?: "Unknown Genre")
             }
 
             // Género
@@ -150,7 +155,9 @@ class VideoGameDetailActivity : ComponentActivity() {
                     tint = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "Publicado por: "+videoGame?.publisher ?: "Unknown Publisher")
+                Text(
+                    fontFamily = nunitoRegular,
+                    text = "Publicado por: "+videoGame?.publisher ?: "Unknown Publisher")
             }
 
             // Género
@@ -165,21 +172,23 @@ class VideoGameDetailActivity : ComponentActivity() {
                     tint = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "Plataforma: "+videoGame?.platform ?: "Unknown Platform")
+                Text(
+                    fontFamily = nunitoRegular,
+                    text = "Plataforma: "+videoGame?.platform ?: "Unknown Platform")
             }
 
             // Descripción corta editable
             OutlinedTextField(
                 value = updatedDescription,  // Usar el valor actualizado
                 onValueChange = onDescriptionChanged,  // Actualizar cuando cambie el texto
-                label = { Text("Short Description") },
+                label = { Text("Descripción corta (editable)") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
                 singleLine = false,
                 maxLines = 4
             )
-
+            Spacer(modifier = Modifier.weight(1f))
             // Botones
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -190,7 +199,8 @@ class VideoGameDetailActivity : ComponentActivity() {
                     onClick = onBackClicked,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(text = "Volver")
+                    Text(text = "Volver",
+                        fontFamily = nunitoRegular)
                 }
 
                 // Botón de eliminar
@@ -198,7 +208,8 @@ class VideoGameDetailActivity : ComponentActivity() {
                     onClick = onDeleteClicked,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(text = "Eliminar")
+                    Text(text = "Eliminar",
+                        fontFamily = nunitoRegular)
                 }
 
                 // Botón de guardar cambios en la descripción
@@ -206,14 +217,15 @@ class VideoGameDetailActivity : ComponentActivity() {
                     onClick = onSaveDescriptionClicked,  // Guardar cambios
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(text = "Guardar")
+                    Text(text = "Guardar",
+                        fontFamily = nunitoRegular)
                 }
             }
         }
     }
 
     fun getVideoGameDetail(id: Int, onGameFetched: (VideoGameItem?) -> Unit) {
-        // Lanza la corutina en el hilo IO para obtener datos
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val db = VideoGameDB.getInstance(this@VideoGameDetailActivity)
@@ -221,7 +233,7 @@ class VideoGameDetailActivity : ComponentActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (v != null) {
-                        // Llamada al callback con el videojuego
+
                         onGameFetched(
                             VideoGameItem(
                                 id = v.id,

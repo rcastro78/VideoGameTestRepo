@@ -32,6 +32,7 @@ import sv.com.videogamestest.db.VideoGameDB
 import sv.com.videogamestest.db.VideoGameEntity
 import sv.com.videogamestest.viewmodel.VideoGameViewModel
 import sv.com.videogametest.ui.theme.VideoGameTestTheme
+import sv.com.videogametest.util.nunitoBold
 
 class MainActivity : ComponentActivity() {
     private val videoGameViewModel: VideoGameViewModel by inject()
@@ -85,6 +86,7 @@ class MainActivity : ComponentActivity() {
                     text = "Descargando listado...",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
+                    fontFamily = nunitoBold,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 72.dp)
                 )
