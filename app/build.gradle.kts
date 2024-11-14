@@ -73,7 +73,6 @@ dependencies {
     testImplementation ("org.mockito:mockito-core:5.2.0")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     testImplementation("com.google.truth:truth:1.1.5")
-
     implementation ("io.insert-koin:koin-android:3.2.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
     implementation ("com.google.android.gms:play-services-location:21.0.1")

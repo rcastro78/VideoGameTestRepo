@@ -64,6 +64,7 @@ class MainActivity : ComponentActivity() {
                 if (videoGameViewModel.isLoading) {
                     SplashScreen()
                 }else{
+                   Thread.sleep(1000)
                    Intent(this@MainActivity, VideoGamesActivity::class.java).also{
                        startActivity(it)
                    }

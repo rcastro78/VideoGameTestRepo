@@ -16,6 +16,7 @@ class VideoGamesScreenUITest {
         composeTestRule.setContent {
             VideoGamesActivity().VideoGamesScreen()
         }
+        composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Game1").performClick()
     }
 }

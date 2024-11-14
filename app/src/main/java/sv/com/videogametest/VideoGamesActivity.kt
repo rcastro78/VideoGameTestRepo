@@ -2,6 +2,7 @@ package sv.com.videogametest
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,23 +34,20 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import sv.com.videogamestest.composable.VideoGameItemComposable
 import sv.com.videogamestest.db.VideoGameDB
 import sv.com.videogamestest.model.VideoGameItem
 import sv.com.videogametest.ui.theme.VideoGameTestTheme
 
 class VideoGamesActivity : ComponentActivity() {
-    var lstVideoGames = mutableListOf<VideoGameItem>()
 
-    override fun onResume() {
-        getVideoGames()
-        super.onResume()
-    }
+    private val lstVideoGames = mutableStateListOf<VideoGameItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
+        getVideoGames()
         setContent {
             VideoGameTestTheme {
                 VideoGamesScreen()
@@ -57,33 +56,31 @@ class VideoGamesActivity : ComponentActivity() {
     }
 
     @Composable
-    @Preview(showBackground = true)
-    fun VideoGamesScreen(){
+    fun VideoGamesScreen() {
         var searchText by remember { mutableStateOf("") }
-        val filteredList: List<VideoGameItem>
-        if(searchText.isNotEmpty()) {
-            filteredList = lstVideoGames.filter {
+        val filteredList = if (searchText.isNotEmpty()) {
+            lstVideoGames.filter {
                 it.title.contains(searchText, ignoreCase = true) || it.genre.contains(searchText, ignoreCase = true)
             }
-        }else{
-            filteredList = lstVideoGames
+        } else {
+            lstVideoGames
         }
 
-        Column(  modifier = Modifier
-            .padding(horizontal = 12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally){
-
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = "Listado de Juegos",
                 color = Color.Blue,
                 fontSize = 24.sp,
-                //fontFamily = nunitoBold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
-            SearchBarVideoGame(searchText,
+            SearchBarVideoGame(
+                searchText,
                 onSearchTextChange = { searchText = it }
             )
             LazyColumn(
@@ -92,25 +89,21 @@ class VideoGamesActivity : ComponentActivity() {
                     .weight(1f)
             ) {
                 itemsIndexed(filteredList.sortedBy { it.title }) { index, item ->
-                    VideoGameItemComposable(item.thumbnail,item.title,
-                        item.id,onItemClicked = {
+                    VideoGameItemComposable(item.thumbnail, item.title,
+                        item.id, onItemClicked = {
                             val intent = Intent(this@VideoGamesActivity, VideoGameDetailActivity::class.java)
                             intent.putExtra("gameId", it)
                             startActivity(intent)
                             finish()
                         })
                 }
-
             }
-
         }
     }
-
     @Composable
-    @Preview(showBackground = true)
     fun SearchBarVideoGame(
-        searchText: String="",
-        onSearchTextChange: (String) -> Unit={}
+        searchText: String = "",
+        onSearchTextChange: (String) -> Unit = {}
     ) {
         TextField(
             value = searchText,
@@ -124,20 +117,28 @@ class VideoGamesActivity : ComponentActivity() {
         )
     }
 
-
-    fun getVideoGames(){
+    // Función para obtener los juegos desde la base de datos
+    fun getVideoGames() {
+        // Limpiar la lista para asegurarse de que está vacía antes de añadir nuevos elementos
         lstVideoGames.clear()
+
         val db = VideoGameDB.getInstance(this)
         CoroutineScope(Dispatchers.IO).launch {
             val videoGames = db.iVideoGameDAO().getAll()
+            Log.d("VideoGamesActivity", "Total de juegos recuperados: ${videoGames.size}")
+
+            // Agregar los juegos a la lista lstVideoGames
             videoGames.forEach { v ->
-                val videoGameItem = VideoGameItem(v.developer,v.freetogame_profile_url,
-                    v.game_url,v.genre,v.id,v.platform,v.publisher,v.release_date,
-                    v.short_description,v.thumbnail,v.title)
-                lstVideoGames.add(videoGameItem)
+                val videoGameItem = VideoGameItem(
+                    v.developer, v.freetogame_profile_url,
+                    v.game_url, v.genre, v.id, v.platform, v.publisher, v.release_date,
+                    v.short_description, v.thumbnail, v.title
+                )
+                // Usamos `withContext(Dispatchers.Main)` para actualizar la lista en el hilo principal
+                withContext(Dispatchers.Main) {
+                    lstVideoGames.add(videoGameItem)
+                }
             }
         }
     }
-
 }
-
