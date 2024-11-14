@@ -42,7 +42,7 @@ import sv.com.videogametest.ui.theme.VideoGameTestTheme
 
 class VideoGamesActivity : ComponentActivity() {
 
-    val lstVideoGames = mutableStateListOf<VideoGameItem>()
+    var lstVideoGames = mutableStateListOf<VideoGameItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -82,6 +83,14 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.8.1")
     implementation("androidx.sqlite:sqlite-ktx:2.4.0")
 
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("io.mockk:mockk:1.13.4")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation ("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+
+    testImplementation ("io.insert-koin:koin-test:3.4.0")
+    testImplementation ("io.mockk:mockk:1.13.4")
     // Implementation of the AndroidX SQLite interfaces via the Android framework APIs.
     implementation("androidx.sqlite:sqlite-framework:2.4.0")
     kapt("androidx.room:room-compiler:2.6.1")

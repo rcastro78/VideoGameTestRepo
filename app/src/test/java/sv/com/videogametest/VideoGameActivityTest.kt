@@ -1,6 +1,7 @@
 package sv.com.videogametest
 
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -17,7 +18,7 @@ class VideoGamesActivityTest {
             VideoGameItem("Developer1", "url1", "game_url1", "Action", 1, "PC", "Publisher1", "2022-01-01", "Description1", "thumb1", "Game1"),
             VideoGameItem("Developer2", "url2", "game_url2", "Adventure", 2, "PC", "Publisher2", "2022-01-02", "Description2", "thumb2", "Game2"),
             VideoGameItem("Developer3", "url3", "game_url3", "Action", 3, "PC", "Publisher3", "2022-01-03", "Description3", "thumb3", "Game3")
-        )
+        ) as SnapshotStateList<VideoGameItem>
     }
 
     @Test
